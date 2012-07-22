@@ -5,7 +5,8 @@ QStrike = (function () {
   var ns = QStrike.Widgets.Types
   var bucket
   vms = {}
-  var defaultTopLevel
+  var defaultType
+  var defaultValues
 
   QStrike.generateId = function generateId() {
     var ret = ''
@@ -15,12 +16,17 @@ QStrike = (function () {
     return ret
   }
 
+  function getDefaults(id, type, def) {
+    var obj = typeof def === 'function' ? def() : def
+    obj.id = id
+    obj.type = type
+    return obj
+  }
+
   QStrike.CreateType = function CreateType(type, propName, fn) {
     return function create() {
       var id = QStrike.generateId()
-        , obj = typeof fn === 'function' ? fn() : fn
-      obj.id = id
-      obj.type = type
+        , obj = getDefaults(id, type, fn)
       obj.parent = this.id
       obj.parentProp = propName
       vm = new ns[type](obj)
@@ -188,10 +194,11 @@ QStrike = (function () {
 
   function ready() {
     if (vms.toplevel == null) {
-      vms.toplevel = new ns[defaultTopLevel]({ id: 'toplevel', type: 'TaskList', title: "", completed: false })
+      vms.toplevel = new ns[defaultType](getDefaults('toplevel', defaultType, defaultValues))
       vms.toplevel.update()
     }
-    defaultTopLevel = null
+    defaultType = null
+    defaultValues = null
     ko.applyBindings(vms.toplevel)
   }
 
@@ -212,7 +219,8 @@ QStrike = (function () {
     var simperium = new Simperium(opts.appName, {token: opts.token});
     var b = simperium.bucket(opts.bucket);
     bucket = b
-    defaultTopLevel = opts.defaultObj
+    defaultType = opts.defaultType
+    defaultValues = opts.defaultValues
     bucket.on('notify', notify)
     bucket.on('local', local)
     bucket.on('ready', ready)
