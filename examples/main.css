@@ -1,0 +1,61 @@
+/*
+@font-face {
+  font-family: 'MyriadWebProRegular';
+  src: url("/fonts/myriadwebpro-webfont.eot");
+}
+@font-face {
+  font-family: 'MyriadWebProRegular';
+  src: url("/fonts/myriadwebpro-webfont.woff") format('woff'), url("/fonts/myriadwebpro-webfont.ttf") format('truetype'), url("/fonts/myriadwebpro-webfont.svg#webfont7llmAsUB") format('svg');
+  font-weight: lighter;
+  font-style: normal;
+}
+  */
+body {
+  margin: 0px;
+  padding: 0px;
+  background-color: #e5e5e5;
+  font: 22px "MyriadWebProRegular", Verdana, sans-serif;
+  line-height: 1.4;
+}
+html,
+body {
+  height: 100%;
+}
+#header {
+  height: 50px;
+  width: 100%;
+  background-color: #0d0d0d;
+  z-index: 5;
+  color: #808080;
+  font-size: 32px;
+  font-weight: lighter;
+}
+#header #logo {
+  position: absolute;
+  top: 4px;
+  left: 15px;
+}
+#add-button {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+}
+#add-button a {
+  text-decoration: none;
+  color: #808080;
+  text-align: center;
+  padding: 0px 5px;
+}
+.TaskList {
+  padding-left: 20px;
+  max-width: 600px;
+  border: 1px solid #000;
+}
+#widgets {
+  display: none;
+}
+.task-name {
+  width: 200px;
+  height: 27px;
+  display: inline-block;
+}

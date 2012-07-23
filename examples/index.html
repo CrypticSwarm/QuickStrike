@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Todo</title>
+<meta name="description" content="Todo, Organize, Productive">
+<link href="main.css" rel="stylesheet">
+</head>
+<body>
+  <div id="header">
+    <div id="logo">You have things to do: Do It Now.</div>
+  </div>
+
+  <div id="widgets">
+
+    <div class="Task">
+      <input type="checkbox" data-bind="checked: done"/>
+      <input type="textbox" data-bind="value: title, stream: 'title'"/>
+      <span data-bind="click: close" class="closebox">X</span>
+    </div>
+
+    <div class="TaskList">
+      <div>
+        <a href="#" data-bind="click: addTask">Task</a>|
+        <a href="#" data-bind="click: addTaskList">TaskList</a>|
+      </div>
+      <input type="textbox" data-bind="value: title, stream: 'title'"/>
+      <span data-bind="click: close" class="closebox">X</span>
+      <div data-bind="foreach: tasks" class="tasks">
+        <div data-bind="dispatch: type" class="widget"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div data-bind="dispatch: type" class="widget"></div>
+  </div>
+  <script type="text/javascript" src="/examples/knockout.js"></script>
+  <script type="text/javascript" src="https://js.simperium.com/v0.1/"></script>
+  <script type="text/javascript" src="/scripts/qs-simperium.js"></script>
+  <script type="text/javascript" src="/examples/todo.js"></script>
+</body>
+</html>
