@@ -31,7 +31,7 @@ See prebuilt section for a list of what they do.
 #### Example
 
 ```javascript
-var Task = QStrike.make('Task', { props: ['completed'], text: ['name'] }
+var Task = QStrike.make('Task', { obs: ['done', 'title'] }
             , { close: QStrike.Closable('tasks') })
 ```
 
@@ -51,9 +51,7 @@ This takes four parameters.
 Extending the previous example.
 
 ```javascript
-var TaskDefaults = function (id, type) {
-      return { name: "", completed: false }
-    }
+var TaskDefaults = { title: "", done: false }
   , TaskList = QStrike.compose(Task
     , 'TaskList'
     , { subob: ['tasks'] }
