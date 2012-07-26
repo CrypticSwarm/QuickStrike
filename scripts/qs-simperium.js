@@ -15,20 +15,20 @@ QStrike = (function () {
     return ret
   }
 
-  function getDefaults(id, type, def) {
-    var obj = typeof def === 'function' ? def() : def
+  function getDefaults(id, type) {
+    var obj = {}
     obj.id = id
     obj.type = type
     return obj
   }
 
-  QStrike.CreateType = function CreateType(type, propName, fn) {
+  QStrike.CreateType = function CreateType(type, propName) {
     return function create() {
       var id = QStrike.generateId()
-        , obj = getDefaults(id, type, fn)
+        , obj = getDefaults(id, type)
       obj.parent = this.id
       obj.parentProp = propName
-      vm = new ns[type](obj)
+      vm = new ns[type](obj, true)
       vms[id] = vm
       vms[id].update()
     }
@@ -62,18 +62,22 @@ QStrike = (function () {
     return vm
   }
 
-  QStrike.Closable = function (propName) {
-    return function () {
-      if (this.parent() == null) return
-      this.parent(null)
-      // May want to clear out this object from the bucket?
-    }
+  QStrike.Closable = function () {
+    if (this.parent() == null) return
+    this.parent(null)
+    // May want to clear out this object from the bucket?
   }
 
   function makeQStrike(name, props, methods) {
     methods = methods || {}
     var noupdate = false
-    function makeType(info) {
+    obsKeys = []
+    if (props.obs != null) {
+      for (var key in props.obs) {
+        obsKeys.push(key)
+      }
+    }
+    function makeType(info, useDefaults) {
       var vm = this
       var parent = info.parent
       vm.type = name
@@ -93,8 +97,9 @@ QStrike = (function () {
           parentVM[vm.parentProp].splice(index, 1)
         }
       })
-      if (props.obs != null) props.obs.forEach(function (name) {
-        vm[name] = ko.observable(info[name])
+      obsKeys.forEach(function (name) {
+        vm[name] = useDefaults ? ko.observable(props.obs[name])
+                 : ko.observable(info[name])
         vm[name].subscribe(propagateUpdate)
       })
       if (props.subob != null) props.subob.forEach(function (name) {
@@ -122,7 +127,7 @@ QStrike = (function () {
     function local() {
       var vm = this
       var ret = { type: vm.type, id: vm.id, parentProp: vm.parentProp, parent: vm.parent() }
-      if (props.obs != null) props.obs.forEach(function (name) {
+      obsKeys.forEach(function (name) {
         ret[name] = vm[name]()
       })
       return ret
@@ -132,7 +137,7 @@ QStrike = (function () {
       var vm = this
       noupdate = true
       vm.parent(obj.parent)
-      if (props.obs != null) props.obs.forEach(function (name) {
+      obsKeys.forEach(function (name) {
         vm[name](obj[name])
       })
       noupdate = false
@@ -193,7 +198,7 @@ QStrike = (function () {
 
   function ready() {
     if (vms.toplevel == null) {
-      vms.toplevel = new ns[defaultType](getDefaults('toplevel', defaultType, defaultValues))
+      vms.toplevel = new ns[defaultType](getDefaults('toplevel', defaultType))
       vms.toplevel.update()
     }
     defaultType = null
