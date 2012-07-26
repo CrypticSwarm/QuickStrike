@@ -1,4 +1,4 @@
-var Task = QStrike.make('Task', { obs: { done: false, title: "" } }
+var Task = QStrike.make('Task', { sync: { done: false, title: "" } }
             , { close: QStrike.Closable })
   , TaskList = QStrike.compose(Task
             , 'TaskList'

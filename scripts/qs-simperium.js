@@ -72,8 +72,8 @@ QStrike = (function () {
     methods = methods || {}
     var noupdate = false
     obsKeys = []
-    if (props.obs != null) {
-      for (var key in props.obs) {
+    if (props.sync != null) {
+      for (var key in props.sync) {
         obsKeys.push(key)
       }
     }
@@ -98,7 +98,7 @@ QStrike = (function () {
         }
       })
       obsKeys.forEach(function (name) {
-        vm[name] = useDefaults ? ko.observable(props.obs[name])
+        vm[name] = useDefaults ? ko.observable(props.sync[name])
                  : ko.observable(info[name])
         vm[name].subscribe(propagateUpdate)
       })
