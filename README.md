@@ -21,7 +21,7 @@ The props objects declares a list of types that the data will be.
 The keys are the types then an array of data member names.
 Currently there are two varieties.
 
-1. obs - data that will be attached as a regular KO Observable.
+1. sync - data that will be attached as a regular KO Observable and synced with other users.
 1. subob - Allows data of different types to be injected (other view models created via `QStrike.make` or `QStrike.compose`). This data hold an array of child view models. 
 
 The method object get attached as view model methods. These methods are used through the interface.
@@ -31,8 +31,8 @@ See prebuilt section for a list of what they do.
 #### Example
 
 ```javascript
-var Task = QStrike.make('Task', { obs: ['done', 'title'] }
-            , { close: QStrike.Closable('tasks') })
+var Task = QStrike.make('Task', { sync: { done: false, title: "" } }
+            , { close: QStrike.Closable })
 ```
 
 ### compose
@@ -51,12 +51,11 @@ This takes four parameters.
 Extending the previous example.
 
 ```javascript
-var TaskDefaults = { title: "", done: false }
-  , TaskList = QStrike.compose(Task
+var TaskList = QStrike.compose(Task
     , 'TaskList'
     , { subob: ['tasks'] }
-    , { addTaskList: QStrike.CreateType('TaskList', 'tasks', TaskDefaults)
-      , addTask: QStrike.CreateType('Task', 'tasks', TaskDefaults)
+    , { addTaskList: QStrike.CreateType('TaskList', 'tasks')
+      , addTask: QStrike.CreateType('Task', 'tasks')
       })
 ```
 
@@ -81,9 +80,8 @@ var TaskDefaults = { title: "", done: false }
 * *init* (object) - an object that has required credentials and options.
 
 * `init.defaultType` - The name of a view model type created by `make` or `compose`.
-* `init.defaultValue` - The default values for the observables for that type.
 
-If the bucket is empty then an viewmodel with type of `defaultType` is created and initialzed with `defaultValue` values.
+If the bucket is empty then an viewmodel with type of `defaultType` is created.
 
 
 #### Simperium
@@ -95,5 +93,4 @@ Simperium specific options include: `appName`, `token`, `bucket`.
 QStrike.start({ appName: '[appName]'
               , token: '[token]'
               , bucket: 'todo'
-              , defaultType: 'TaskList'
-              , defaultValues: TaskDefaults })
+              , defaultType: 'TaskList' })
