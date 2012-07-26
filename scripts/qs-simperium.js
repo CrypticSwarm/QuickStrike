@@ -1,8 +1,7 @@
 QStrike = (function () {
   var QStrike = {}
   QStrike.Widgets = {}
-  QStrike.Widgets.Types = {}
-  var ns = QStrike.Widgets.Types
+  var ns = QStrike.Widgets
   var bucket
   vms = {}
   var defaultType
@@ -140,7 +139,7 @@ QStrike = (function () {
     }
     makeType.prototype = methods
     makeType.props = props
-    QStrike.Widgets.Types[name] = makeType
+    QStrike.Widgets[name] = makeType
     return makeType
   }
 
