@@ -105,6 +105,9 @@ QStrike = (function () {
       if (props.subob != null) props.subob.forEach(function (name) {
         vm[name] = ko.observableArray()
       })
+      if (props.nonsync != null) props.nonsync.forEach(function (name) {
+        vm[name] = ko.observable()
+      })
       if (vm.parent()) {
         ;(function parentVM() {
           var parentVM = vms[vm.parent()]
