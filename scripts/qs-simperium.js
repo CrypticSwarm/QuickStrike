@@ -71,7 +71,7 @@ QStrike = (function () {
   function makeQStrike(name, props, methods) {
     methods = methods || {}
     var noupdate = false
-    obsKeys = []
+    var obsKeys = []
     if (props.sync != null) {
       for (var key in props.sync) {
         obsKeys.push(key)
